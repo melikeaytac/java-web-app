@@ -10,28 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 'Checkout master'
+    - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: 'Sign in to Azure'
+    - name: Azure Giriş
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: 'Docker Login to ACR'
+    - name: ACR Giriş
       uses: azure/docker-login@v1
       with:
         login-server: melikeacr01.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    - name: 'Build and Push Docker image'
+    - name: Docker Image Build ve Push
       run: |
-        docker build . -t melikeacr01.azurecr.io/week11image:${{ github.sha }}
-        docker push melikeacr01.azurecr.io/week11image:${{ github.sha }}
+        docker build . -t melikeacr01.azurecr.io/week11image:latest
+        docker push melikeacr01.azurecr.io/week11image:latest
 
-    - name: 'Deploy to Azure Web App'
+    - name: Azure Web App’e Deploy
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'melikewebapp01'
-        images: 'melikeacr01.azurecr.io/week11image:${{ github.sha }}'
+        app-name: 'melikewebappfr3' 
+        images: 'melikeacr01.azurecr.io/week11image:latest'
